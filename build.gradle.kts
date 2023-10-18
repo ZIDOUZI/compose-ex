@@ -8,16 +8,4 @@ task<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            from(components["release"])
-            groupId = "zdz.libs"
-            artifactId = "compose-ex"
-            version = "1.0.0-alpha01"
-            artifact(tasks["androidSourcesJar"])
-            pom.packaging = "aar"
-        }
-    }
-}
 true // Needed to make the Suppress annotation work for the plugins block
