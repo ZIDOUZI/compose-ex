@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    `maven-publish`
 }
 
 android {
@@ -29,6 +30,19 @@ android {
     buildFeatures.compose = true
     composeOptions.kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     kotlinOptions.jvmTarget = "1.8"
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("release") {
+                from(components["release"])
+                groupId = "zdz.libs.compose.ex"
+                artifactId = "compose-ex"
+                version = "1.0.0"
+            }
+        }
+    }
 }
 
 dependencies {
