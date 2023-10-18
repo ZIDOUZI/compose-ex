@@ -37,9 +37,6 @@ afterEvaluate {
         publications {
             create<MavenPublication>("release") {
                 from(components["release"])
-                groupId = "zdz.libs.compose.ex"
-                artifactId = "compose-ex"
-                version = "1.0.0-alpha05"
             }
         }
     }
