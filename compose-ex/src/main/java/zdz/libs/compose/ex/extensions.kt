@@ -16,6 +16,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 
+val @receiver:DrawableRes Int.icon: @Composable () -> Unit
+    @Composable
+    get() = { Icon(painter = painterResource(id = this), contentDescription = null) }
+
 @Composable
 fun @receiver:DrawableRes Int.AsIcon(
     modifier: Modifier = Modifier,
