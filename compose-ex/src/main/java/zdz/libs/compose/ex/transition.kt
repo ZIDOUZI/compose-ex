@@ -27,12 +27,12 @@ sealed class Direction(val enter: Boolean.(Int) -> Int, val exit: Boolean.(Int) 
     }
 }
 
-private fun getTransformBy(direction: Direction.Vertical) =
+fun getTransformBy(direction: Direction.Vertical) =
     fun AnimatedContentTransitionScope<Boolean>.(): ContentTransform =
         fadeIn() + slideInVertically { direction.enter(targetState, it) } togetherWith
                 fadeOut() + slideOutVertically { direction.exit(targetState, it) }
 
-private fun getTransformBy(direction: Direction.Horizontal) =
+fun getTransformBy(direction: Direction.Horizontal) =
     fun AnimatedContentTransitionScope<Boolean>.(): ContentTransform =
         fadeIn() + slideInHorizontally { direction.enter(targetState, it) } togetherWith
                 fadeOut() + slideOutHorizontally { direction.exit(targetState, it) }
