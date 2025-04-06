@@ -2,10 +2,9 @@
 plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.compose) apply false
     `maven-publish`
 }
-task<Delete>("clean") {
+tasks.register<Delete>("clean") {
     delete(rootProject.layout.buildDirectory)
 }
-
-true // Needed to make the Suppress annotation work for the plugins block

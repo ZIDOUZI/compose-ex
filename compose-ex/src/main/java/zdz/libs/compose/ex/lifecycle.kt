@@ -4,18 +4,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 
 @Composable
-private fun OnLifecycle(predicate: (Lifecycle.Event) -> Boolean, callback: () -> Unit) {
+fun OnLifecycle(callback: (Lifecycle.Event) -> Unit) {
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     val callbackState by rememberUpdatedState(callback)
 
     DisposableEffect(lifecycle) {
         val observer = LifecycleEventObserver { _, event ->
-            if (predicate(event)) callbackState()
+            callbackState(event)
         }
 
         lifecycle.addObserver(observer)
@@ -26,16 +26,14 @@ private fun OnLifecycle(predicate: (Lifecycle.Event) -> Boolean, callback: () ->
 
 @Composable
 fun OnResume(callback: () -> Unit) {
-    OnLifecycle(
-        predicate = { it.targetState == Lifecycle.State.RESUMED },
-        callback = callback
-    )
+    OnLifecycle {
+        if (it == Lifecycle.Event.ON_RESUME) callback()
+    }
 }
 
 @Composable
 fun OnPause(callback: () -> Unit) {
-    OnLifecycle(
-        predicate = { it == Lifecycle.Event.ON_PAUSE },
-        callback = callback
-    )
+    OnLifecycle {
+        if (it == Lifecycle.Event.ON_PAUSE) callback()
+    }
 }

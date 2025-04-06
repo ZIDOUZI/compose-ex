@@ -137,7 +137,7 @@ fun AlertDialog(
     titleContentColor: Color = AlertDialogDefaults.titleContentColor,
     tonalElevation: Dp = AlertDialogDefaults.TonalElevation,
     properties: DialogProperties = DialogProperties(),
-) = AlertDialog(
+) = BasicAlertDialog(
     onDismissRequest = onDismiss,
     properties = properties,
     modifier = modifier

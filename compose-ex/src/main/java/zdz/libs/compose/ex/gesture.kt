@@ -7,7 +7,7 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.ripple
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,7 +18,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.semantics.Role
-import kotlinx.coroutines.*
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.milliseconds
 import androidx.compose.foundation.clickable as click
 
@@ -55,9 +59,12 @@ fun Modifier.clickable(
     )
 }
 
+private val ripple = ripple()
+
 fun Modifier.repeatable(
     enabled: Boolean = true,
     delayMillis: Int? = null,
+    minimumMillis: Int = 10,
     onEnd: (() -> Unit)? = null,
     onRepeat: () -> Unit,
 ) = this.composed(inspectorInfo = debugInspectorInfo {
@@ -87,14 +94,16 @@ fun Modifier.repeatable(
                             
                             try {
                                 delay(longPressTimeout)
-                                var repeatInterval = 100.milliseconds
+                                var repeatInterval = 100L
                                 
                                 while (rememberedIsEnabled) {
                                     rememberedOnRepeat()
                                     
                                     delay(repeatInterval)
                                     
-                                    if (count++ == 10) repeatInterval = 10.milliseconds
+                                    if (count++ == 10 && repeatInterval > minimumMillis) repeatInterval = 10
+                                    if (count++ == 100 && repeatInterval > minimumMillis) repeatInterval = 1
+                                    // TODO
                                 }
                             } finally {
                                 withContext(NonCancellable) { if (count == 0) rememberedOnRepeat() }
@@ -118,5 +127,5 @@ fun Modifier.repeatable(
                 }
             })
         }
-        .indication(interactionSource = interaction, indication = rememberRipple())
+        .indication(interactionSource = interaction, indication = ripple)
 }

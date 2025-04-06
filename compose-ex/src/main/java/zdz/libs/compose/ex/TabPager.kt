@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.SecondaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,7 +26,7 @@ fun <T> TabPager(
     val scope = rememberCoroutineScope()
     
     Column(modifier = modifier) {
-        ScrollableTabRow(
+        SecondaryScrollableTabRow(
             selectedTabIndex = state.currentPage,
             edgePadding = 0.dp,
             containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -40,12 +40,12 @@ fun <T> TabPager(
                 )
             }
         }
-        
+
         HorizontalPager(
             modifier = Modifier.weight(1f),
             state = state,
             verticalAlignment = Alignment.Top,
-            beyondBoundsPageCount = 0,
+            beyondViewportPageCount = 0,
             pageContent = { content(items.elementAt(it)) },
         )
     }
