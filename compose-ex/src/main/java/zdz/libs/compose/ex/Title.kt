@@ -2,8 +2,10 @@ package zdz.libs.compose.ex
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.FabPosition
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ProvideTextStyle
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -13,7 +15,7 @@ import androidx.compose.ui.unit.dp
 private val titleHeadingPadding = Modifier.padding(start = 8.dp)
 
 /**
- * @param[heading]可组合的标题槽位
+ * @param[header]可组合的标题槽位
  * @param[modifier]修饰符,修饰[content]所在的Column
  * @param[fab]悬浮按钮槽位
  * @param[fabPosition]悬浮按钮放置的位置
@@ -21,7 +23,7 @@ private val titleHeadingPadding = Modifier.padding(start = 8.dp)
  */
 @Composable
 fun Title(
-    heading: @Composable () -> Unit,
+    header: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     fab: @Composable () -> Unit = {},
     fabPosition: FabPosition = FabPosition.End,
@@ -33,7 +35,7 @@ fun Title(
     containerColor = colorScheme.background
 ) {
     Column {
-        heading()
+        header()
         Box(modifier = Modifier.fillMaxSize()) {
             content?.invoke(this, it)
         }
